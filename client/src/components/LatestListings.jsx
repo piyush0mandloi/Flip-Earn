@@ -1,6 +1,7 @@
 import React from 'react'
 import Title from './Title'
 import {useSelector} from 'react-redux'
+import ListingCard from './ListingCard'
 
 const LatestListings = () => {
     const {listings} = useSelector(state=> state.listings)
@@ -10,8 +11,7 @@ const LatestListings = () => {
       <div>
         {listings.slice(0,4).map((listing, index)=>(
             <div key={index}>
-                <h1>{listing.title}</h1>
-                <h2>{listing.username}</h2>
+                <ListingCard listing={listing}></ListingCard>
             </div>
         ))}
       </div>
