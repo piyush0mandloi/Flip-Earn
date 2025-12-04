@@ -40,7 +40,7 @@ const Marketplace = () => {
         <FilterSideBar setFilterPhone={setFilterPhone} filterPhone={filterPhone} filters={filters} setFilters={setFilters}/>
       <div className='flex-1 grid xl:grid-cols-2 gap-4 '>
         {filteredListings.sort((a,b)=>a.featured? -1: b.featured ? 1:0).map((listing, index)=>(
-          <ListingCard listing={listing}/>
+          <ListingCard key={index} listing={listing}/>
         ))}
       </div>
       </div>
