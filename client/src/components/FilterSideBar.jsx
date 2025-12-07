@@ -131,7 +131,7 @@ const onClearFliter = ()=>{
           {expandedSections.platform && (
             <div className="flex flex-col gap-2">
               {platforms.map((platform)=>(
-                <label className="flex items-center gap-2 text-gray-700 text-sm">
+                <label  key={platform.value} className="flex items-center gap-2 text-gray-700 text-sm">
                   <input type="checkbox" checked={filters.platform?.includes(platform.value) || false }
                   onChange={(e)=>{
                     const checked = e.target.checked;
