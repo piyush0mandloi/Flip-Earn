@@ -6,6 +6,8 @@ import {
   ArrowLeftIcon,
   ArrowUpRightFromSquare,
   CheckCircle2,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   DollarSign,
   Loader2Icon,
 } from "lucide-react";
@@ -27,6 +29,15 @@ const ListingDetails = () => {
       setListing(listing);
     }
   }, [listingId, listings]);
+
+  const [current, setCurrent] = useState(0)
+  const images = listing?.images || []
+
+  const prevSlide = ()=> setCurrent((prev)=> (prev===0?images.length-1:prev-1))
+  const nextSlide = ()=> setCurrent((prev)=> (prev===images.length-1?0:prev+1))
+
+
+
   return listing ? (
     <div className="mx-auto min-h-screen px-6 md:px-16 lg:px-24 xl:px-32">
       <button
@@ -41,7 +52,9 @@ const ListingDetails = () => {
         <div className="flex-1 max-md:w-full">
           {/* Top section */}
           <div className="gb-white rounded-xl border border-gray-200 p-6 mb-5">
-            
+
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+
             <div className="flex items-start gap-3">
               <div className="p-2 rounded-xl">{platformIcons[listing.platform]}</div>
               <div>
@@ -68,7 +81,43 @@ const ListingDetails = () => {
               </div>
             </div>
 
+            <div className="text-right">
+              <h3 className="text-2xl font-bold text-gray-800">
+                {currency}
+                {listing.price?.toLocaleString()}
+              </h3>
+              <p className="text-sm text-gray-500">USD</p>
+            </div>
+
+
+            </div>
           </div>
+ 
+         {/* Screenshot Section */}
+          {images?.length >0 &&(
+            <div className="bg-white rounded-xl border border-gray-200 mb-5 overflow-hidden">
+              <div className="p-4">
+                <h4 className="font-semibold text-gray-800">Screenshots & Proof</h4>
+              </div>
+              {/* Slider container */}
+                <div className="relative w-full aspect-video overflow-hidden">
+                  <div className="flex transition-transform duration-300 ease-in-out" style={{transform: `translateX(-${current*100}%)`}}>
+                    {images.map((img, index)=>(
+                      <img key={index} src={img} alt="Listing Proof" className="w-full shrink-0"/>
+                    ))}
+                  </div>
+
+                  {/* Navigation Buttons */}
+                  <button className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow">
+                    <ChevronLeftIcon className="w-5 h-5 text-gray-700"/>
+                  </button>
+                  <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow">
+                    <ChevronRightIcon className="w-5 h-5 text-gray-700"/>
+                  </button>
+                </div>
+            </div>
+          )}
+
         </div>
         {/* seller info & purchase options */}
         <div></div>
