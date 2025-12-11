@@ -5,11 +5,18 @@ import { useSelector } from "react-redux";
 import {
   ArrowLeftIcon,
   ArrowUpRightFromSquare,
+  Calendar,
   CheckCircle2,
   ChevronLeftIcon,
   ChevronRightIcon,
   DollarSign,
+  Eye,
+  LineChart,
   Loader2Icon,
+  MapPin,
+  MessageSquareMoreIcon,
+  ShoppingBagIcon,
+  Users,
 } from "lucide-react";
 
 const ListingDetails = () => {
@@ -108,19 +115,125 @@ const ListingDetails = () => {
                   </div>
 
                   {/* Navigation Buttons */}
-                  <button className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow">
+                  <button onClick={prevSlide} className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow">
                     <ChevronLeftIcon className="w-5 h-5 text-gray-700"/>
                   </button>
-                  <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow">
+                  <button onClick={nextSlide} className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow">
                     <ChevronRightIcon className="w-5 h-5 text-gray-700"/>
                   </button>
+
+                  {/* Dots Indicator */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                    {images.map((_, index)=>(
+                      <button onClick={()=> setCurrent(index)} key={index} className={`w-2.5 h-2.5 rounded-full ${ current===index? "bg-indigo-600":"bg-gray-300"}`}/>
+                    ))}
+                  </div>
                 </div>
             </div>
           )}
 
+          {/* Account Metrics */}
+          <div className="bg-white rounded-xl border border-gray-200 mb-5">
+            <div className="p-4 border-b border-gray-100">
+              <h4 className="font-semibold text-gray-800">Account Metrics</h4>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 text-center">
+              <div>
+                <Users className="mx-auto text-gray-400 w-5 h-5 mb-1"/>
+                <p className="font-semibold text-gray-800">
+                  {listing.followers_count?.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">Followers</p>
+              </div>
+              <div>
+                <LineChart className="mx-auto text-gray-400 w-5 h-5 mb-1"/>
+                <p className="font-semibold text-gray-800">
+                  {listing.engagement}%
+                </p>
+                <p className="text-xs text-gray-500">Engagement</p>
+              </div>
+              <div>
+                <Eye className="mx-auto text-gray-400 w-5 h-5 mb-1"/>
+                <p className="font-semibold text-gray-800">
+                  {listing.monthly_views?.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">Monthly Views</p>
+              </div>
+              <div>
+                <Calendar className="mx-auto text-gray-400 w-5 h-5 mb-1"/>
+                <p className="font-semibold text-gray-800">
+                  {new Date(listing.createdAt).toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">Listed</p>
+              </div>
+            </div>
+          </div>
+
+        {/* Description */}
+        <div className="bg-white rounded-xl border border-gray-200 mb-5">
+          <div className="p-4 border-b border-gray-100">
+            <h4 className="font-semibold text-gray-800">Description</h4>
+          </div>
+          <div className="p-4 text-sm text-gray-600">{listing.description}</div>
+        </div>
+
+        {/* Additional Details */}
+         <div className="bg-white rounded-xl border border-gray-200 mb-5">
+          <div className="p-4 border-b border-gray-100">
+            <h4 className="font-semibold text-gray-800">Additional Details</h4>
+          </div>
+          <div className="p-4 text-sm grid grid-col-1 md:grid-cols-2 gap-6">
+            <div>
+              <p className="text-gray-500">Niche</p>
+              <p className="font-medium capitalize">{listing.niche}</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Primary Country</p>
+              <p className="font-medium capitalize">
+                <MapPin >{listing.country}</MapPin></p>
+            </div>
+            <div>
+              <p className="text-gray-500">Audience Age</p>
+              <p className="font-medium">{listing.age_range}</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Platform Verified</p>
+              <p className="font-medium">{listing.platformAssured?"Yes":"No"}</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Monetization</p>
+              <p className="font-medium">{listing.monetized?"Enabled":"Disabled"}</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Status</p>
+              <p className="font-medium">{listing.status}</p>
+            </div>
+          </div>
+        </div>
+
         </div>
         {/* seller info & purchase options */}
-        <div></div>
+        <div className="bg-white min-w-full md:min-w-[370px] rounded-xl borde border-gray-200 p-5 max-md:mb-10">
+          <h4 className="font-semibold text-gray-800 mb-4">Seller Information</h4>
+          <div className="flex items-center gap-3 mb-2">
+            <img src={listing.owner?.image} alt="seller image" className="size-10 rounded-full"/>
+            <div>
+              <p className="font-medium text-gray-800">{listing.owner?.name}</p>
+              <p className="text-sm text-gray-500">{listing.owner?.email}</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+            <p>Member Since <span className="font-medium">{new Date(listing.owner?.createdAt).toLocaleDateString()}</span></p>
+          </div>
+          <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium flex items-center justify-center gap-2">
+            <MessageSquareMoreIcon className="size-4"/>Chat
+          </button>
+          {listing.isCredentialChanged &&(
+            <button className="w-full mt-2 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
+              <ShoppingBagIcon className="size-4"/>Purchase
+            </button>
+          )}
+        </div>
       </div>
     </div>
   ) : (
