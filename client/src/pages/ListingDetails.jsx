@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProfileLink, platformIcons } from "../assets/assets";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ArrowLeftIcon,
   ArrowUpRightFromSquare,
@@ -18,8 +18,14 @@ import {
   ShoppingBagIcon,
   Users,
 } from "lucide-react";
+import { setChat } from "../app/features/chatSlice";
 
 const ListingDetails = () => {
+
+
+  const dispatch = useDispatch()
+
+
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURRENCY || "$";
 
@@ -29,6 +35,14 @@ const ListingDetails = () => {
 
   const { listingId } = useParams();
   const { listings } = useSelector((state) => state.listings);
+
+  const purchaseAccount = async ()=>{
+
+  }
+
+  const loadChatBox = ()=>{
+    dispatch(setChat({listing:listing}))
+  }
 
   useEffect(() => {
     const listing = listings.find((listing) => listing.id == listingId);
@@ -225,15 +239,22 @@ const ListingDetails = () => {
           <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
             <p>Member Since <span className="font-medium">{new Date(listing.owner?.createdAt).toLocaleDateString()}</span></p>
           </div>
-          <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium flex items-center justify-center gap-2">
+          <button onClick={loadChatBox} className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium flex items-center justify-center gap-2">
             <MessageSquareMoreIcon className="size-4"/>Chat
           </button>
           {listing.isCredentialChanged &&(
-            <button className="w-full mt-2 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
+            <button onClick={purchaseAccount} className="w-full mt-2 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
               <ShoppingBagIcon className="size-4"/>Purchase
             </button>
           )}
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-white border-t border-gray-200 p-4 text-center mt-28">
+        <p className="text-sm text-gray-500">
+          @ 2026 <span className="text-indigo-600">FlipEarn</span>. All rights reserved
+        </p>
       </div>
     </div>
   ) : (
