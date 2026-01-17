@@ -1,5 +1,5 @@
-import { ArrowUpCircleIcon, BanIcon, CheckCircle, Clock, CoinsIcon, DollarSign, Eye, LockIcon, Plus, StarIcon, TrendingUp, Users, WalletIcon, XCircle } from 'lucide-react'
-import React from 'react'
+import { ArrowUpCircleIcon, BanIcon, CheckCircle, Clock, CoinsIcon, DollarSign, Edit, Eye, EyeIcon, EyeOffIcon, LockIcon, Plus, StarIcon, TrashIcon, TrendingUp, Users, WalletIcon, XCircle } from 'lucide-react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import StatCard from '../components/StatCard'
@@ -10,6 +10,9 @@ const MyListings = () => {
   const {userListings, balance} = useSelector((state)=> state.listings)
   const currency=import.meta.env.VITE_CURRENCY || '$'
   const navigate=useNavigate()
+
+  const [showCredentialSubmission, setShowCredentialSubmission] = useState(null)
+  const [showWithdrawl, setShowWithdrawl] = useState(null)
 
   const totalValue = userListings.reduce((sum, listing)=> sum +(listing.price || 0),0);
   const activeListings = userListings.filter((listing)=>listing.status==='active').length;
@@ -59,6 +62,17 @@ const MyListings = () => {
     }
   }
 
+  const toggleStatus = async (listingId)=>{
+
+  }
+
+  const deleteListing = async (listingId)=>{
+    
+  }
+
+  const markAsFeatured = async (listingId)=>{
+    
+  }
 
   return (
     <div className='px-6 md:mx-16 lg:px-24 xl:px-32 pt-8'>
@@ -153,7 +167,7 @@ const MyListings = () => {
                 </div>
 
                 {listing.status === 'active' &&(
-                  <StarIcon className={`text-yellow-500 cursor-pointer ${listing.featured && 'fill-yellow-500'}`} />
+                  <StarIcon onClick={()=> markAsFeatured(listing.id)} size={18} className={`text-yellow-500 cursor-pointer ${listing.featured && 'fill-yellow-500'}`} />
                 )}
               </div>
             </div>
@@ -169,6 +183,30 @@ const MyListings = () => {
             <span className={`flex items-center justify-end gap-1 ${getStatusColor(listing.status)}`}>
               {getStatusIcon(listing.status)}{" "}<span>{listing.status}</span>
             </span>
+            <div className='flex items-center space-x-2'>
+            <TrendingUp className='size-4 text-gray-400'/>
+            <span>{listing.engagement_rate}% engagement</span>
+            </div>
+          </div>
+          <div className='flex items-center justify-between pt-3 border-t border-gray-200'>
+            <span className='text-2xl font-bold text-gray-800'>
+              {currency}
+              {listing.price.toLocaleString()}
+            </span>
+            <div className='flex items-center space-x-2'>
+              {listing.status !== 'sold' &&(
+                <button onClick={()=> deleteListing(listing.id)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-red-500'>
+                  <TrashIcon className='size-4'/>
+                </button>
+              )}
+              <button onClick={()=> navigate(`/edit-listing/${listing.id}`)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-indigo-500'>
+                  <Edit className='size-4'/>
+                </button>
+              <button onClick={()=> toggleStatus(listing.id)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-purple-500'>
+                  {listing.status === 'active' && (<EyeOffIcon className='size-4'/>)}
+                  {listing.status !== 'active' && (<EyeIcon className='size-4'/>)}  
+                </button>
+            </div>
           </div>
         </div>
       </div>
@@ -177,7 +215,13 @@ const MyListings = () => {
 </div>
     ) 
     }
-    </div>
+     {/* Footer */}
+      <div className="bg-white border-t border-gray-200 p-4 text-center mt-28">
+        <p className="text-sm text-gray-500">
+          @ 2026 <span className="text-indigo-600">FlipEarn</span>. All rights reserved
+        </p>
+      </div>
+</div>
   )
 }
 
