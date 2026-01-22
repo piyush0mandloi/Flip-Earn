@@ -11,8 +11,8 @@ const CredentialSubmission = ({onClose, listing}) => {
 
     const handleAddField = ()=>{
         const name = newField.trim();
-        if(!name) return toast("Please enter a field name")
-        setCredential((prev)=>[...prev,{type:"text", name,value:""}])
+        if(!fieldName ) return toast("Please enter a field name")
+        setCredential((prev)=>[...prev,{type:"text", name:fieldName ,value:""}])
         setNewField("")
     }
     const handleSubmission = async (e)=>{
@@ -35,7 +35,7 @@ const CredentialSubmission = ({onClose, listing}) => {
           {credential.map((cred, index)=>(
             <div className='grid grid-cols-[2fr_3fr_1fr] items-center gap-2' key={cred.type}>
               <label className='text-sm font-medium text-gray-800'>{cred.name}</label>
-              <input type="text" value={cred.value} onChange={(e)=> setCredential((prev)=>prev.map((c,i)=>(i===index)?{...c,value:e.target.value}: c))} className='w-full px-2 py-1.5 text-sm border border-gray-300 rounded outline-indigo-400'/>
+              <input type={cred.type} value={cred.value} onChange={(e)=> setCredential((prev)=>prev.map((c,i)=>(i===index)?{...c,value:e.target.value}: c))} className='w-full px-2 py-1.5 text-sm border border-gray-300 rounded outline-indigo-400'/>
               <X className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer" onClick={()=> setCredential((prev)=>prev.filter((_,i)=>i!==index))}/>
             </div>
           ))}
@@ -47,7 +47,7 @@ const CredentialSubmission = ({onClose, listing}) => {
             </button>
           </div>
           {/* Submit */}
-          <button className='bg-indigo-600 hover:bg-indigo-700'>Submit</button>
+          <button type='submit' className='bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 mt-4 rounded-md'>Submit</button>
         </form>
       </div>
     </div>
