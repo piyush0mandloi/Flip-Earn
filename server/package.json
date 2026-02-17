@@ -6,7 +6,7 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js",
-    "build": "prisma generate"
+    "build": "echo Build completed"
   },
   "dependencies": {
     "@clerk/express": "^1.7.67",
@@ -18,11 +18,12 @@
     "express": "^5.2.1",
     "inngest": "^3.50.0",
     "multer": "^2.0.2",
-    "prisma": "^5.22.0",
+    
     "ws": "^8.19.0"
   },
   "devDependencies": {
     "@types/ws": "^8.18.1",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "prisma": "^5.22.0"
   }
 }
